@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS 선택자 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a18;
+    --paper: #f5f2eb;
+    --accent: #c84b2f;
+    --accent2: #2a6496;
+    --muted: #7a7468;
+    --code-bg: #1e1e1e;
+    --code-text: #d4d0c8;
+    --highlight: #f0e68c;
+    --border: #c8c2b4;
+    --section-gap: 4rem;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  /* ─── 헤더 ─── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    border: 40px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+  header::after {
+    content: 'CSS';
+    position: absolute;
+    bottom: -20px; right: 2rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 8rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.04);
+    letter-spacing: -4px;
+  }
+  .header-inner { max-width: 860px; margin: 0 auto; }
+  .header-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.2rem;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    font-size: 1rem;
+    color: rgba(245,242,235,0.65);
+    max-width: 520px;
+  }
+
+  /* ─── 목차 ─── */
+  .toc {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0 2rem 3rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .toc-inner { max-width: 860px; margin: 0 auto; }
+  .toc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 1.5rem 0 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 1rem;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
+  }
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    color: rgba(245,242,235,0.7);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .toc-item:hover { color: var(--accent); }
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    min-width: 22px;
+  }
+
+  /* ─── 메인 ─── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ─── 섹션 ─── */
+  .selector-section {
+    padding: var(--section-gap) 0;
+    border-bottom: 1px solid var(--border);
+    animation: fadeUp 0.6s ease both;
+  }
+  .selector-section:last-child { border-bottom: none; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 1.5rem;
+  }
+  .section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--border);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .section-titles h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .section-titles .selector-syntax {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    background: rgba(200,75,47,0.08);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .desc {
+    color: #3d3a34;
+    margin-bottom: 1.5rem;
+    font-size: 15px;
+    padding-left: 64px;
+  }
+
+  /* 특징 목록 */
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-left: 64px;
+    margin-bottom: 1.5rem;
+  }
+  .feature-tag {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(42,100,150,0.1);
+    color: var(--accent2);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── 코드 블록 ─── */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 0 1.5rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  }
+  .code-header {
+    background: #2d2d2d;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .code-dots span {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+  }
+  .dot-r { background: #ff5f56; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #27c93f; }
+  .code-filename {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #888;
+    margin-left: auto;
+  }
+  pre {
+    padding: 1.2rem 1.4rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--code-text);
+  }
+  .kw { color: #cc99cd; }
+  .sel { color: #f8c555; }
+  .prop { color: #6fb3d2; }
+  .val { color: #7ec699; }
+  .cmt { color: #666; font-style: italic; }
+  .str { color: #e6b422; }
+  .tag { color: #f08080; }
+  .attr { color: #9ec1cf; }
+
+  /* ─── 미리보기 ─── */
+  .preview-box {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .preview-label {
+    background: #ede9e0;
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .preview-content {
+    padding: 1.5rem;
+    background: #fff;
+  }
+
+  /* ─── 각 미리보기 스타일 ─── */
+
+  /* 1. 전체 선택자 */
+  .demo1-reset * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Georgia, serif;
+    color: #2a6496;
+  }
+  .demo1-box {
+    border: 2px dashed #2a6496;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  /* 2. 클래스 선택자 */
+  .highlight-yellow { background: #fff176; padding: 2px 6px; border-radius: 3px; font-weight: bold; }
+  .highlight-green  { background: #c8e6c9; padding: 2px 6px; border-radius: 3px; font-weight: bold; }
+  .highlight-red    { background: #ffcdd2; padding: 2px 6px; border-radius: 3px; font-weight: bold; }
+  .demo2-p { font-size: 14px; line-height: 2; color: #333; }
+
+  /* 3. ID 선택자 */
+  #demo3-box {
+    background: linear-gradient(135deg, #1a1a18, #2d2d2b);
+    color: #f5f2eb;
+    padding: 16px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    border-left: 4px solid var(--accent);
+  }
+  #demo3-box strong { color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+
+  /* 4. 자식 선택자 */
+  .demo4-nav {
+    background: #1a1a18;
+    padding: 10px 16px;
+    border-radius: 8px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .demo4-nav > a {
+    color: #f5f2eb;
+    background: rgba(255,255,255,0.08);
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+  .demo4-nav > a:hover { background: var(--accent); }
+  .demo4-nav > span { color: #888; font-size: 12px; margin-left: 8px; font-family: 'JetBrains Mono', monospace; }
+  .demo4-nav .nested-link {
+    color: #888;
+    font-size: 11px;
+    text-decoration: none;
+    margin-left: 4px;
+  }
+
+  /* 5. 속성 선택자 */
+  .demo5-form { display: flex; flex-direction: column; gap: 10px; }
+  .demo5-form input[type="text"] {
+    border: 2px solid #2a6496;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+  }
+  .demo5-form input[type="email"] {
+    border: 2px solid #388e3c;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+  }
+  .demo5-form input[type="password"] {
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+  }
+  .demo5-labels { display: flex; gap: 12px; font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+  .demo5-labels span { padding: 2px 8px; border-radius: 4px; }
+
+  /* 6. 의사 클래스 선택자 */
+  .demo6-list { list-style: none; }
+  .demo6-list li {
+    padding: 10px 14px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+    transition: all 0.2s;
+  }
+  .demo6-list li:first-child {
+    background: #fff3e0;
+    color: #e65100;
+    font-weight: bold;
+    border-radius: 6px 6px 0 0;
+  }
+  .demo6-list li:last-child {
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-weight: bold;
+    border-radius: 0 0 6px 6px;
+    border-bottom: none;
+  }
+  .demo6-list li:nth-child(even) { background: #f5f5f5; }
+  .demo6-list li:hover { background: #e3f2fd; color: #1565c0; padding-left: 22px; }
+
+  /* ─── 푸터 ─── */
+  footer {
+    background: var(--ink);
+    color: rgba(245,242,235,0.45);
+    text-align: center;
+    padding: 2.5rem;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 4rem;
+  }
+  footer span { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- ─── 헤더 ─── -->
+<header>
+  <div class="header-inner">
+    <p class="header-tag">HTML / CSS Reference Guide</p>
+    <h1>CSS <span>선택자</span><br>완전 가이드</h1>
+    <p>웹 스타일링의 핵심, CSS 선택자 6가지를 예제와 함께 완전히 이해합니다.</p>
+  </div>
+</header>
+
+<!-- ─── 목차 ─── -->
+<nav class="toc" aria-label="목차">
+  <div class="toc-inner">
+    <p class="toc-label">목차</p>
+    <div class="toc-grid">
+      <a href="#s1" class="toc-item"><span class="toc-num">01</span> 전체 선택자</a>
+      <a href="#s2" class="toc-item"><span class="toc-num">02</span> 클래스 선택자</a>
+      <a href="#s3" class="toc-item"><span class="toc-num">03</span> ID 선택자</a>
+      <a href="#s4" class="toc-item"><span class="toc-num">04</span> 자식 선택자</a>
+      <a href="#s5" class="toc-item"><span class="toc-num">05</span> 속성 선택자</a>
+      <a href="#s6" class="toc-item"><span class="toc-num">06</span> 의사 클래스 선택자</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── 본문 ─── -->
+<main>
+
+  <!-- 01. 전체 선택자 -->
+  <section class="selector-section" id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <div class="section-titles">
+        <h2>전체 선택자</h2>
+        <span class="selector-syntax">* { }</span>
+      </div>
+    </div>
+
+    <p class="desc">
+      별표(<code>*</code>)를 사용하며, HTML 문서 내의 <strong>모든 요소</strong>를 동시에 선택합니다.
+      주로 브라우저 기본 스타일을 초기화하는 CSS Reset 또는 Normalize에 사용됩니다.
+      적용 범위가 매우 넓어 과도하게 사용하면 성능에 영향을 줄 수 있으므로 주의가 필요합니다.
+    </p>
+
+    <div class="features">
+      <span class="feature-tag">브라우저 초기화</span>
+      <span class="feature-tag">box-sizing 통일</span>
+      <span class="feature-tag">전역 폰트 설정</span>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <span class="code-filename">style.css</span>
+      </div>
+      <pre><span class="cmt">/* 전체 선택자: 모든 요소에 적용 */</span>
+<span class="sel">*</span> {
+  <span class="prop">margin</span>: <span class="val">0</span>;
+  <span class="prop">padding</span>: <span class="val">0</span>;
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+  <span class="prop">font-family</span>: <span class="val">Georgia, serif</span>;
+  <span class="prop">color</span>: <span class="val">#2a6496</span>;
+}</pre>
+    </div>
+
+    <div class="preview-box">
+      <div class="preview-label">미리보기</div>
+      <div class="preview-content">
+        <div class="demo1-reset">
+          <div class="demo1-box">
+            ✅ 이 박스 안의 <strong>모든 요소</strong>에 동일한 스타일이 적용되었습니다.
+            margin, padding이 0으로 초기화되고, 같은 폰트와 색상을 공유합니다.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02. 클래스 선택자 -->
+  <section class="selector-section" id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <div class="section-titles">
+        <h2>클래스 선택자</h2>
+        <span class="selector-syntax">.className { }</span>
+      </div>
+    </div>
+
+    <p class="desc">
+      점(<code>.</code>) 뒤에 클래스 이름을 적어 선택합니다. HTML에서 <code>class="이름"</code> 속성을 가진 요소를 선택하며,
+      <strong>여러 요소에 동일한 클래스를 부여</strong>할 수 있어 재사용성이 가장 높습니다.
+      하나의 요소에 여러 클래스를 동시에 적용하는 것도 가능합니다.
+    </p>
+
+    <div class="features">
+      <span class="feature-tag">재사용 가능</span>
+      <span class="feature-tag">다중 클래스 적용</span>
+      <span class="feature-tag">가장 일반적</span>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <span class="code-filename">style.css</span>
+      </div>
+      <pre><span class="cmt">/* 클래스 선택자: .클래스명 */</span>
+<span class="sel">.highlight-yellow</span> {
+  <span class="prop">background</span>: <span class="val">#fff176</span>;
+  <span class="prop">padding</span>: <span class="val">2px 6px</span>;
+  <span class="prop">border-radius</span>: <span class="val">3px</span>;
+}
+
+<span class="sel">.highlight-green</span> {
+  <span class="prop">background</span>: <span class="val">#c8e6c9</span>;
+  <span class="prop">padding</span>: <span class="val">2px 6px</span>;
+}
+
+<span class="cmt">/* HTML: &lt;span class="highlight-yellow"&gt;텍스트&lt;/span&gt; */</span></pre>
+    </div>
+
+    <div class="preview-box">
+      <div class="preview-label">미리보기</div>
+      <div class="preview-content">
+        <p class="demo2-p">
+          CSS에서 <span class="highlight-yellow">클래스 선택자</span>는 가장 많이 쓰이며,
+          <span class="highlight-green">재사용이 자유롭고</span>,
+          <span class="highlight-red">여러 클래스를 조합</span>할 수도 있습니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03. ID 선택자 -->
+  <section class="selector-section" id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <div class="section-titles">
+        <h2>ID 선택자</h2>
+        <span class="selector-syntax">#idName { }</span>
+      </div>
+    </div>
+
+    <p class="desc">
+      샵(<code>#</code>) 뒤에 ID 이름을 적어 선택합니다. HTML에서 <code>id="이름"</code> 속성으로 지정하며,
+      <strong>한 페이지에 동일한 ID는 단 하나만 존재</strong>해야 합니다.
+      특이성(specificity)이 클래스보다 높아 스타일 우선순위가 높지만, 남용하면 유지보수가 어려워집니다.
+    </p>
+
+    <div class="features">
+      <span class="feature-tag">페이지당 고유 1개</span>
+      <span class="feature-tag">높은 우선순위</span>
+      <span class="feature-tag">앵커 링크 활용</span>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <span class="code-filename">style.css</span>
+      </div>
+      <pre><span class="cmt">/* ID 선택자: #아이디명 */</span>
+<span class="sel">#demo3-box</span> {
+  <span class="prop">background</span>: <span class="val">#1a1a18</span>;
+  <span class="prop">color</span>: <span class="val">#f5f2eb</span>;
+  <span class="prop">padding</span>: <span class="val">16px 20px</span>;
+  <span class="prop">border-left</span>: <span class="val">4px solid #c84b2f</span>;
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;
+}
+
+<span class="cmt">/* HTML: &lt;div id="demo3-box"&gt;...&lt;/div&gt; */</span></pre>
+    </div>
+
+    <div class="preview-box">
+      <div class="preview-label">미리보기</div>
+      <div class="preview-content">
+        <div id="demo3-box">
+          이 요소는 <strong>#demo3-box</strong> ID를 가진 유일한 요소입니다.
+          ID는 페이지 내에서 한 번만 사용되어야 하며, 앵커 링크(<code>#demo3-box</code>)로도 활용됩니다.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04. 자식 선택자 -->
+  <section class="selector-section" id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <div class="section-titles">
+        <h2>자식 선택자</h2>
+        <span class="selector-syntax">부모 > 자식 { }</span>
+      </div>
+    </div>
+
+    <p class="desc">
+      꺽쇠(<code>&gt;</code>)를 사용하며, 지정한 부모 요소의 <strong>직계 자식만</strong> 선택합니다.
+      손자나 그 이하 요소는 선택되지 않아 스타일 범위를 정밀하게 제어할 수 있습니다.
+      공백(<code> </code>)으로 연결하는 후손 선택자와 구별하는 것이 중요합니다.
+    </p>
+
+    <div class="features">
+      <span class="feature-tag">직계 자식만 선택</span>
+      <span class="feature-tag">정밀한 범위 제어</span>
+      <span class="feature-tag">네비게이션에 유용</span>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <span class="code-filename">style.css</span>
+      </div>
+      <pre><span class="cmt">/* 자식 선택자: 부모 > 직계자식만 */</span>
+<span class="sel">.nav</span> <span class="kw">&gt;</span> <span class="tag">a</span> {
+  <span class="prop">color</span>: <span class="val">#f5f2eb</span>;
+  <span class="prop">background</span>: <span class="val">rgba(255,255,255,0.08)</span>;
+  <span class="prop">padding</span>: <span class="val">6px 14px</span>;
+  <span class="prop">border-radius</span>: <span class="val">6px</span>;
+}
+
+<span class="cmt">/* .nav 안의 &lt;span&gt; 속 &lt;a&gt;는 선택 안 됨! */</span></pre>
+    </div>
+
+    <div class="preview-box">
+      <div class="preview-label">미리보기</div>
+      <div class="preview-content">
+        <nav class="demo4-nav">
+          <a href="#">홈</a>
+          <a href="#">서비스</a>
+          <a href="#">포트폴리오</a>
+          <a href="#">문의</a>
+          <span>← 직계 &lt;a&gt;만 스타일 적용됨 <a class="nested-link" href="#">(중첩 링크는 미적용)</a></span>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05. 속성 선택자 -->
+  <section class="selector-section" id="s5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <div class="section-titles">
+        <h2>속성 선택자</h2>
+        <span class="selector-syntax">요소[속성="값"] { }</span>
+      </div>
+    </div>
+
+    <p class="desc">
+      대괄호(<code>[ ]</code>) 안에 HTML 속성과 값을 지정하여 해당 속성을 가진 요소를 선택합니다.
+      <code>[type="text"]</code>처럼 정확한 값 매칭 외에도 <code>[href^="https"]</code>(시작값),
+      <code>[src$=".png"]</code>(끝값), <code>[class*="btn"]</code>(포함)처럼 다양한 패턴으로 활용할 수 있습니다.
+    </p>
+
+    <div class="features">
+      <span class="feature-tag">[attr="value"]</span>
+      <span class="feature-tag">[attr^="시작"]</span>
+      <span class="feature-tag">[attr$="끝"]</span>
+      <span class="feature-tag">[attr*="포함"]</span>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <span class="code-filename">style.css</span>
+      </div>
+      <pre><span class="cmt">/* 속성 선택자: 속성값에 따라 다른 스타일 */</span>
+<span class="tag">input</span><span class="sel">[type="text"]</span> {
+  <span class="prop">border</span>: <span class="val">2px solid #2a6496</span>; <span class="cmt">/* 파란 테두리 */</span>
+}
+
+<span class="tag">input</span><span class="sel">[type="email"]</span> {
+  <span class="prop">border</span>: <span class="val">2px solid #388e3c</span>; <span class="cmt">/* 초록 테두리 */</span>
+}
+
+<span class="tag">input</span><span class="sel">[type="password"]</span> {
+  <span class="prop">border</span>: <span class="val">2px solid #c84b2f</span>; <span class="cmt">/* 빨간 테두리 */</span>
+}</pre>
+    </div>
+
+    <div class="preview-box">
+      <div class="preview-label">미리보기</div>
+      <div class="preview-content">
+        <div class="demo5-labels" style="margin-bottom:10px">
+          <span style="background:#e3f2fd;color:#1565c0">text → 파란 테두리</span>
+          <span style="background:#e8f5e9;color:#2e7d32">email → 초록 테두리</span>
+          <span style="background:#ffebee;color:#c62828">password → 빨간 테두리</span>
+        </div>
+        <div class="demo5-form">
+          <input type="text" placeholder="이름 (type=text)">
+          <input type="email" placeholder="이메일 (type=email)">
+          <input type="password" placeholder="비밀번호 (type=password)">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06. 의사 클래스 선택자 -->
+  <section class="selector-section" id="s6">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <div class="section-titles">
+        <h2>의사 클래스 선택자</h2>
+        <span class="selector-syntax">요소:pseudo-class { }</span>
+      </div>
+    </div>
+
+    <p class="desc">
+      콜론(<code>:</code>)을 사용하며, 요소의 <strong>특정 상태나 위치</strong>를 선택합니다.
+      사용자 인터랙션 상태(<code>:hover</code>, <code>:focus</code>, <code>:active</code>)나
+      구조적 위치(<code>:first-child</code>, <code>:last-child</code>, <code>:nth-child(n)</code>)를
+      기반으로 동적 스타일을 적용할 수 있어 JavaScript 없이도 인터랙션 구현이 가능합니다.
+    </p>
+
+    <div class="features">
+      <span class="feature-tag">:hover</span>
+      <span class="feature-tag">:first-child</span>
+      <span class="feature-tag">:last-child</span>
+      <span class="feature-tag">:nth-child(n)</span>
+      <span class="feature-tag">:focus</span>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <span class="code-filename">style.css</span>
+      </div>
+      <pre><span class="cmt">/* 의사 클래스 선택자: 상태/위치 기반 */</span>
+<span class="sel">li</span><span class="kw">:first-child</span> {
+  <span class="prop">background</span>: <span class="val">#fff3e0</span>;
+  <span class="prop">color</span>: <span class="val">#e65100</span>;
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+}
+
+<span class="sel">li</span><span class="kw">:last-child</span> {
+  <span class="prop">background</span>: <span class="val">#e8f5e9</span>;
+  <span class="prop">color</span>: <span class="val">#2e7d32</span>;
+}
+
+<span class="sel">li</span><span class="kw">:nth-child(even)</span> { <span class="prop">background</span>: <span class="val">#f5f5f5</span>; }
+
+<span class="sel">li</span><span class="kw">:hover</span> {
+  <span class="prop">background</span>: <span class="val">#e3f2fd</span>;
+  <span class="prop">padding-left</span>: <span class="val">22px</span>;
+  <span class="prop">transition</span>: <span class="val">all 0.2s</span>;
+}</pre>
+    </div>
+
+    <div class="preview-box">
+      <div class="preview-label">미리보기 (항목에 마우스를 올려보세요)</div>
+      <div class="preview-content" style="padding:0">
+        <ul class="demo6-list">
+          <li>🥇 첫 번째 항목 (:first-child) — 주황색 강조</li>
+          <li>두 번째 항목</li>
+          <li>세 번째 항목 (:nth-child(even) — 회색 배경)</li>
+          <li>네 번째 항목</li>
+          <li>다섯 번째 항목 (:nth-child(odd))</li>
+          <li>🏁 마지막 항목 (:last-child) — 초록색 강조</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ─── 푸터 ─── -->
+<footer>
+  <p>CSS Selector Guide &nbsp;·&nbsp; <span>6가지 핵심 선택자</span> &nbsp;·&nbsp; HTML Reference Document</p>
+</footer>
+
+</body>
+</html>
