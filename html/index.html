@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>컴퓨터 보안 수업 안내</title>
+    <style>
+        /* 기본 스타일 및 모바일 최적화 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; }
+        header { background: #1a2a6c; color: white; padding: 40px 20px; text-align: center; }
+        section { padding: 30px 20px; border-bottom: 1px solid #eee; }
+        h2 { color: #1a2a6c; margin-bottom: 15px; border-left: 5px solid #1a2a6c; padding-left: 10px; font-size: 1.4rem; }
+
+        /* 1. 컴퓨터보안 소개 */
+        .intro-text { font-size: 0.95rem; color: #555; }
+
+        /* 2. 내 수업정보 (표 모바일 대응) */
+        .info-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        .info-table th, .info-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        .info-table th { background-color: #f2f2f2; width: 30%; }
+
+        /* 3. 갤러리 (그리드 레이아웃) */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 모바일 2열 */
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .gallery-item { background: #eee; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; position: relative; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-cap { position: absolute; bottom: 0; background: rgba(0,0,0,0.6); color: #fff; width: 100%; font-size: 0.7rem; padding: 5px; text-align: center; }
+
+        /* 4. 연락처 및 저작권 */
+        .contact-box { background: #f1f3f5; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .btn-call {
+            display: block; text-align: center; background: #34C759; color: white; 
+            padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px;
+        }
+        footer { text-align: center; font-size: 0.8rem; color: #888; padding: 20px; }
+
+        /* PC 버전 대응 (화면이 넓어질 때) */
+        @media (min-width: 600px) {
+            .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Computer Security</h1>
+        <p>안전한 디지털 세상을 위한 첫걸음</p>
+    </header>
+
+    <section id="intro">
+        <h2>01. 컴퓨터보안 소개</h2>
+        <p class="intro-text">
+            컴퓨터 보안은 정보 자산의 <strong>기밀성(Confidentiality), 무결성(Integrity), 가용성(Availability)</strong>을 유지하는 것을 목표로 합니다. 
+            현대 사회에서는 개인정보 보호부터 국가 기간시설 방어까지 그 중요성이 날로 커지고 있습니다.
+        </p>
+    </section>
+
+    <section id="class-info">
+        <h2>02. 내 수업정보</h2>
+        <table class="info-table">
+            <tr><th>교과목명</th><td>정보보안 개론</td></tr>
+            <tr><th>강의실</th><td>공학관 402호</td></tr>
+            <tr><th>강의시간</th><td>매주 화요일 14:00 - 16:00</td></tr>
+            <tr><th>학습내용</th><td>암호학, 네트워크 보안, 악성코드 분석</td></tr>
+        </table>
+    </section>
+
+    <section id="gallery">
+        <h2>03. 갤러리</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300" alt="실습사진1">
+                <div class="gallery-cap">보안 실습 전경</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300" alt="실습사진2">
+                <div class="gallery-cap">네트워크 모니터링</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300" alt="실습사진3">
+                <div class="gallery-cap">세미나 발표</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/300" alt="실습사진4">
+                <div class="gallery-cap">코드 리뷰</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>04. 연락처</h2>
+        <div class="contact-box">
+            <p>📧 이메일: security@university.ac.kr</p>
+            <p>📍 위치: 정보대학 보안연구실</p>
+            <a href="tel:010-0000-0000" class="btn-call">📞 교수님께 문의하기</a>
+        </div>
+        <footer>
+            <p>&copy; 2024 Computer Security Class. All rights reserved.</p>
+            <p>본 페이지의 콘텐츠는 무단 복제를 금합니다.</p>
+        </footer>
+    </section>
+</div>
+
+</body>
+</html>
